@@ -66,6 +66,7 @@ public class Blackjack {
 				dealerFinalSum = dealerSum + dealerAces;
 				break;
 			}
+
 			//dealer next card
 			dealerCards.add(roundDeck.get(random.nextInt(104 - playerStartingCards.size() - dealerCards.size())));
 			roundDeck.remove(dealerCards.get(dealerCards.size()-1));
@@ -182,7 +183,7 @@ public class Blackjack {
 	public void hand(ArrayList<String> playerCards, int previousBet){
 		//hand start defaults
 		int playerFinalSum = 0, bet = previousBet;
-		boolean playerBust = false, hasNotPayed = true, calcPlayerScore = false, breakNow = false;
+		boolean playerBust = false, hasNotPaid = true, calcPlayerScore = false, breakNow = false;
 		boolean splitAllowed = false, doubleAllowed = false, hitAllowed = true;
 		
 		//game
@@ -286,7 +287,7 @@ public class Blackjack {
 					System.out.println("Playing second hand: " + playerCards2.get(0) +", "+ playerCards2.get(1));
 					System.out.println("Dealer shows: "+dealerCards.get(0));
 					hand(playerCards2, bet);
-					hasNotPayed = false;
+					hasNotPaid = false;
 					//display dealer cards and conclusions
 					if(displayConclusions){
 						System.out.print("Dealer shows: ");
@@ -303,7 +304,7 @@ public class Blackjack {
 				}
 			}
 			//no splits or done with splits
-			if(hasNotPayed){
+			if(hasNotPaid){
 				//payout
 				if(!playerBust){
 					conclusions.add(payout(dealerFinalSum, playerFinalSum, bet));
@@ -346,7 +347,7 @@ public class Blackjack {
 	}
 
 	
-	public static void main(String[] args){  //FULLY FUNCTIONAL. Next step would be to add the possibility to choose game settings at the start.
+	public static void main(String[] args){
 		Blackjack game = new Blackjack();
 		game.begin();
 	}
