@@ -11,25 +11,48 @@ public class Blackjack {
 	ArrayList<Integer> indexOfTen = new ArrayList<>();
 	Scanner input = new Scanner(System.in);
 	Random random = new Random();
-	
-	
-	
+
+
+	public boolean blackjackCheck(ArrayList<String> startingCards){
+		for(int i = 0; i<4; i++){
+			if(startingCards.contains(completeDeck.get(13 * i + 12))){
+				for(int j = 0; j<4; j++){
+					for(int k = 8; k<=11; k++){
+						if(startingCards.contains(completeDeck.get(13 * j + k))){
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+
+	public int[] sumOfCards(ArrayList<String> cards){
+		//counting aces and other cards
+		int sum=0, aces=0;
+		for(String card : cards){
+			int index = completeDeck.indexOf(card)%13;
+			if(index<=8){
+				sum += (index+2);
+			}else if(index<=11){
+				sum += 10;
+			}else aces += 1;
+		}
+		return new int[]{sum, aces};
+	}
+
+
 	public int dealer(){
 		//dealer actions
 		int dealerSum, dealerAces, dealerFinalSum;
 		
 		while(true){
-			dealerSum = 0;
-			dealerAces = 0;
-			//counting
-			for(String s : dealerCards){
-				int index = completeDeck.indexOf(s)%13;
-				if(index<=8){
-					dealerSum += (index+2);
-				}else if(index<=11){
-					dealerSum += 10;
-				}else dealerAces += 1;
-			}
+			int[] dealerSums = sumOfCards(dealerCards);
+			dealerSum = dealerSums[0];
+			dealerAces = dealerSums[1];
+
 			//choosing calculation method
 			if(dealerAces == 0){
 				if(dealerSum >= 17){
@@ -50,8 +73,7 @@ public class Blackjack {
 		
 		return dealerFinalSum;
 	}
-	
-	
+
 	
 	public void begin(){
 		//deck creation
@@ -124,35 +146,9 @@ public class Blackjack {
 			roundDeck.remove(dealerCards.get(1));
 			
 			//blackjack check
-			playerBlackjack = false;
-			dealerBlackjack = false;
-			player:
-			for(int i = 0; i<4; i++){
-				if(playerStartingCards.contains(completeDeck.get(13 * i + 12))){
-					for(int j = 0; j<4; j++){
-						for(int k = 8; k<=11; k++){
-							if(playerStartingCards.contains(completeDeck.get(13 * j + k))){
-								playerBlackjack = true;
-								break player;
-							}
-						}
-					}
-				}
-			}
-			dealer:
-			for(int i = 0; i<4; i++){
-				if(dealerCards.contains(completeDeck.get(13 * i + 12))){
-					for(int j = 0; j<4; j++){
-						for(int k = 8; k<=11; k++){
-							if(dealerCards.contains(completeDeck.get(13 * j + k))){
-								dealerBlackjack = true;
-								break dealer;
-							}
-						}
-					}
-				}
-			}
-			
+			playerBlackjack = blackjackCheck(playerStartingCards);
+			dealerBlackjack = blackjackCheck(dealerCards);
+
 			//display starting cards
 			System.out.println("Your cards: " + playerStartingCards.get(0) + ", " + playerStartingCards.get(1));
 			if(!dealerBlackjack){
@@ -183,7 +179,6 @@ public class Blackjack {
 	}
 	
 	
-	
 	public void hand(ArrayList<String> playerCards, int previousBet){
 		//hand start defaults
 		int playerFinalSum = 0, bet = previousBet;
@@ -212,17 +207,10 @@ public class Blackjack {
 			while(true){
 				//player score calculation
 				if(calcPlayerScore){
-					int playerSum = 0;
-					int playerAces = 0;
-					//counting
-					for(String s : playerCards){
-						int id = completeDeck.indexOf(s)%13;
-						if(id<=8){
-							playerSum += (id+2);
-						}else if(id<=11){
-							playerSum += 10;
-						}else playerAces += 1;
-					}
+					int[] playerSums = sumOfCards(playerCards);
+					int playerSum = playerSums[0];
+					int playerAces = playerSums[1];
+
 					//choosing calculation method
 					if(playerAces == 0 && playerSum != 21){
 						playerFinalSum = playerSum;
@@ -328,8 +316,7 @@ public class Blackjack {
 			}
 		}else System.out.println(payout(0, 0, bet)); //payout if dealer or player has blackjack
 	}
-	
-	
+
 	
 	public String payout(int dealerFinalSum, int playerFinalSum, int bet){
 		//insurance loss check
@@ -357,8 +344,7 @@ public class Blackjack {
 			return "Blackjack!";
 		}else return "Push";
 	}
-	
-	
+
 	
 	public static void main(String[] args){  //FULLY FUNCTIONAL. Next step would be to add the possibility to choose game settings at the start.
 		Blackjack game = new Blackjack();
