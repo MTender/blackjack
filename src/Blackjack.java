@@ -293,6 +293,7 @@ public class Blackjack {
 						for(String s : dealerCards) System.out.print(s+"  ");
 						System.out.println();
 						for(String s : conclusions) System.out.print(s+"  ");
+						System.out.println();
 						displayConclusions = false;
 					}
 					break;
@@ -312,7 +313,7 @@ public class Blackjack {
 					}
 				}else{
 					money -= bet;
-					conclusions.add("Player bust.");
+					conclusions.add("Player bust");
 				}
 				//display conclusion
 				if(!hasSplit) System.out.println("\n" + conclusions.get(0));
