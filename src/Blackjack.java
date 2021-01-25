@@ -192,6 +192,7 @@ public class Blackjack {
 				if(money >= totalBet + bet && (completeDeck.indexOf(playerCards.get(1))+1)%13 == 0){
 					hitAllowed = false;
 					splitAllowed = true;
+					System.out.println("Dealer shows: "+dealerCards.get(0));
 					System.out.println("Stand or Split (s/sp): ");
 				}else breakNow = true;
 			}else if(money >= totalBet + bet && playerCards.size() == 2){
@@ -281,10 +282,8 @@ public class Blackjack {
 					playerCards2.add(roundDeck.get(random.nextInt(roundDeck.size())));
 					roundDeck.remove(playerCards2.get(1));
 					System.out.println("Playing first hand: " + playerCards.get(0) +", "+ playerCards.get(1));
-					System.out.println("Dealer shows: "+dealerCards.get(0));
 					hand(playerCards, bet);
 					System.out.println("Playing second hand: " + playerCards2.get(0) +", "+ playerCards2.get(1));
-					System.out.println("Dealer shows: "+dealerCards.get(0));
 					hand(playerCards2, bet);
 					hasNotPaid = false;
 					//display dealer cards and conclusions
