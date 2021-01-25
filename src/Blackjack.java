@@ -7,7 +7,7 @@ public class Blackjack {
 	//creating global variables and objects
 	boolean playerBlackjack, dealerBlackjack, insurance, displayConclusions = true, hasSplit;
 	int money=1000, totalBet, dealerFinalSum;
-	ArrayList<String> roundDeck, playerStartingCards, dealerCards, completeDeck = new ArrayList<>(), conclusions = new ArrayList<>();
+	ArrayList<String> roundDeck, dealerCards, completeDeck = new ArrayList<>(), conclusions = new ArrayList<>();
 	ArrayList<Integer> indexOfTen = new ArrayList<>();
 	Scanner input = new Scanner(System.in);
 	Random random = new Random();
@@ -66,7 +66,7 @@ public class Blackjack {
 			}
 
 			//dealer next card
-			dealerCards.add(roundDeck.get(random.nextInt(104 - playerStartingCards.size() - dealerCards.size())));
+			dealerCards.add(roundDeck.get(random.nextInt(roundDeck.size())));
 			roundDeck.remove(dealerCards.get(dealerCards.size()-1));
 		}
 		
@@ -132,8 +132,9 @@ public class Blackjack {
 			
 			//creating temporary round deck
 			roundDeck = new ArrayList<>(completeDeck);
+
 			//first cards
-			playerStartingCards = new ArrayList<>();
+			ArrayList<String> playerStartingCards = new ArrayList<>(); //!!!check whether double ace split works
 			dealerCards = new ArrayList<>();
 			playerStartingCards.add(roundDeck.get(random.nextInt(104)));
 			roundDeck.remove(playerStartingCards.get(0));
@@ -187,7 +188,7 @@ public class Blackjack {
 		//game
 		if(!(playerBlackjack || dealerBlackjack)){
 			//starting options display
-			if(hasSplit && (completeDeck.indexOf(playerStartingCards.get(0))+1)%13 == 0){
+			if(hasSplit && (completeDeck.indexOf(playerCards.get(0))+1)%13 == 0){
 				if(money >= totalBet + bet && (completeDeck.indexOf(playerCards.get(1))+1)%13 == 0){
 					hitAllowed = false;
 					splitAllowed = true;
