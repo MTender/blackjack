@@ -42,6 +42,13 @@ public class Blackjack {
 	}
 
 
+	public void printMany(ArrayList<String> allText){
+		int lastIndex = allText.size()-1;
+		for(int i = 0; i<lastIndex; i++) System.out.print(allText.get(i)+", ");
+		System.out.println(allText.get(lastIndex));
+	}
+
+
 	public int dealer(){
 		//dealer actions
 		int dealerSum, dealerAces, dealerFinalSum;
@@ -239,7 +246,7 @@ public class Blackjack {
 						//display dealer cards
 						if(displayConclusions && !hasSplit){
 							System.out.print("Dealer shows: ");
-							for(String s : dealerCards) System.out.print(s+"  ");
+							printMany(dealerCards);
 							displayConclusions = false;
 						}
 						break;
@@ -256,9 +263,8 @@ public class Blackjack {
 					calcPlayerScore = true;
 					playerCards.add(roundDeck.get(random.nextInt(roundDeck.size())));
 					roundDeck.remove(playerCards.get(playerCards.size() - 1));
-					System.out.print("Your cards: " + playerCards.get(0) + ", " + playerCards.get(1));
-					for(int i = 2; i<playerCards.size(); i++) System.out.print(", " + playerCards.get(i));
-					System.out.println();
+					System.out.print("Your cards: ");
+					printMany(playerCards);
 					splitAllowed = false;
 				}else if(playChoice.equals("s")){
 					//action stand
@@ -294,10 +300,8 @@ public class Blackjack {
 					//display dealer cards and conclusions
 					if(displayConclusions){
 						System.out.print("Dealer shows: ");
-						for(String s : dealerCards) System.out.print(s+"  ");
-						System.out.println();
-						for(String s : conclusions) System.out.print(s+"  ");
-						System.out.println();
+						printMany(dealerCards);
+						printMany(conclusions);
 						displayConclusions = false;
 					}
 					break;
@@ -320,7 +324,7 @@ public class Blackjack {
 					conclusions.add("Player bust");
 				}
 				//display conclusion
-				if(!hasSplit) System.out.println("\n" + conclusions.get(0));
+				if(!hasSplit) System.out.println(conclusions.get(0));
 			}
 		}else System.out.println(payout(0, 0, bet)); //payout if dealer or player has blackjack
 	}
