@@ -7,7 +7,7 @@ public class Blackjack {
 	//creating global variables and objects
 	boolean playerBlackjack, dealerBlackjack, insurance, displayConclusions = true, hasSplit;
 	int money=1000, totalBet, dealerFinalSum;
-	ArrayList<String> roundDeck, playerStartingCards, dealerCards, completeDeck = new ArrayList<>(), conclusions = new ArrayList<>();
+	ArrayList<String> roundDeck, dealerCards, completeDeck = new ArrayList<>(), conclusions = new ArrayList<>();
 	ArrayList<Integer> indexOfTen = new ArrayList<>();
 	Scanner input = new Scanner(System.in);
 	Random random = new Random();
@@ -66,7 +66,7 @@ public class Blackjack {
 			}
 
 			//dealer next card
-			dealerCards.add(roundDeck.get(random.nextInt(104 - playerStartingCards.size() - dealerCards.size())));
+			dealerCards.add(roundDeck.get(random.nextInt(roundDeck.size())));
 			roundDeck.remove(dealerCards.get(dealerCards.size()-1));
 		}
 		
@@ -93,7 +93,7 @@ public class Blackjack {
 				                   "\n\nBlackjack pays 3 to 2.\n\nInsurance pays 2 to 1.\nInsurance only offered upon dealer ace."+
 				                   "\nInsurance fixed to half the bet (rounded down).\n\nDealer must hit soft 17.\n\nNo surrender."+
 				                   "\nYou can double down after splitting.\nDouble down allowed on any two cards."+
-				                   "\nNo limits on splitting.\nNo hitting after split.\nNo blackjacks after splitting.\n\nMax bet: $300\nMin bet: $1"+
+				                   "\nNo limits on splitting.\nNo hitting after splitting aces.\nNo blackjacks after splitting.\n\nMax bet: $300\nMin bet: $1"+
 				                   "\n\nStart new round by pressing enter.\nExit game by typing \"exit\" instead.\n-----------------------------");
 		
 		//round start
@@ -130,20 +130,19 @@ public class Blackjack {
 			}
 			input.nextLine();
 			
-			//creating temporary round deck
+			//creating deck for this round
 			roundDeck = new ArrayList<>(completeDeck);
+
 			//first cards
-			playerStartingCards = new ArrayList<>();
+			ArrayList<String> playerStartingCards = new ArrayList<>(); //!!!check whether double ace split works
 			dealerCards = new ArrayList<>();
-			playerStartingCards.add(roundDeck.get(random.nextInt(104)));
-			roundDeck.remove(playerStartingCards.get(0));
-			dealerCards.add(roundDeck.get(random.nextInt(103)));
-			roundDeck.remove(dealerCards.get(0));
-			playerStartingCards.add(roundDeck.get(random.nextInt(102)));
-			roundDeck.remove(playerStartingCards.get(1));
-			dealerCards.add(roundDeck.get(random.nextInt(101)));
-			roundDeck.remove(dealerCards.get(1));
-			
+			for(int i = 0; i<2; i++) {
+				playerStartingCards.add(roundDeck.get(random.nextInt(roundDeck.size())));
+				roundDeck.remove(playerStartingCards.get(i));
+				dealerCards.add(roundDeck.get(random.nextInt(roundDeck.size())));
+				roundDeck.remove(dealerCards.get(i));
+			}
+
 			//blackjack check
 			playerBlackjack = blackjackCheck(playerStartingCards);
 			dealerBlackjack = blackjackCheck(dealerCards);
@@ -191,12 +190,16 @@ public class Blackjack {
 		//game
 		if(!(playerBlackjack || dealerBlackjack)){
 			//starting options display
-			if(hasSplit && (completeDeck.indexOf(playerStartingCards.get(0))+1)%13 == 0){
+			if(hasSplit && (completeDeck.indexOf(playerCards.get(0))+1)%13 == 0){
 				if(money >= totalBet + bet && (completeDeck.indexOf(playerCards.get(1))+1)%13 == 0){
 					hitAllowed = false;
 					splitAllowed = true;
+					System.out.println("Dealer shows: "+dealerCards.get(0));
 					System.out.println("Stand or Split (s/sp): ");
-				}else breakNow = true;
+				}else{
+					calcPlayerScore = true;
+					breakNow = true;
+				}
 			}else if(money >= totalBet + bet && playerCards.size() == 2){
 				int index1 = completeDeck.indexOf(playerCards.get(0)), index2 = completeDeck.indexOf(playerCards.get(1));
 				if((index1 - index2) % 13 == 0 || (indexOfTen.contains(index1) && indexOfTen.contains(index2))){
@@ -284,10 +287,8 @@ public class Blackjack {
 					playerCards2.add(roundDeck.get(random.nextInt(roundDeck.size())));
 					roundDeck.remove(playerCards2.get(1));
 					System.out.println("Playing first hand: " + playerCards.get(0) +", "+ playerCards.get(1));
-					System.out.println("Dealer shows: "+dealerCards.get(0));
 					hand(playerCards, bet);
 					System.out.println("Playing second hand: " + playerCards2.get(0) +", "+ playerCards2.get(1));
-					System.out.println("Dealer shows: "+dealerCards.get(0));
 					hand(playerCards2, bet);
 					hasNotPaid = false;
 					//display dealer cards and conclusions
@@ -296,6 +297,7 @@ public class Blackjack {
 						for(String s : dealerCards) System.out.print(s+"  ");
 						System.out.println();
 						for(String s : conclusions) System.out.print(s+"  ");
+						System.out.println();
 						displayConclusions = false;
 					}
 					break;
@@ -309,10 +311,13 @@ public class Blackjack {
 			if(hasNotPaid){
 				//payout
 				if(!playerBust){
-					conclusions.add(payout(dealerFinalSum, playerFinalSum, bet));
+					String message = payout(dealerFinalSum, playerFinalSum, bet);
+					if(!message.equals("Dealer bust") || !conclusions.contains("Dealer bust")){
+						conclusions.add(message);
+					}
 				}else{
 					money -= bet;
-					conclusions.add("Player bust.");
+					conclusions.add("Player bust");
 				}
 				//display conclusion
 				if(!hasSplit) System.out.println("\n" + conclusions.get(0));
