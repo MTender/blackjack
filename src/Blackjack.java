@@ -191,7 +191,7 @@ public class Blackjack {
 	public void hand(ArrayList<String> playerCards, int previousBet){
 		//hand start defaults
 		int playerFinalSum = 0, bet = previousBet;
-		boolean playerBust = false, hasNotPaid = true, calcPlayerScore = false, breakNow = false;
+		boolean playerBust = false, hasBeenPaid = false, calcPlayerScore = false, breakNow = false;
 		boolean splitAllowed = false, doubleAllowed = false, hitAllowed = true;
 		
 		//game
@@ -296,7 +296,7 @@ public class Blackjack {
 					hand(playerCards, bet);
 					System.out.println("Playing second hand: " + playerCards2.get(0) +", "+ playerCards2.get(1));
 					hand(playerCards2, bet);
-					hasNotPaid = false;
+					hasBeenPaid = true;
 					//display dealer cards and conclusions
 					if(displayConclusions){
 						System.out.print("Dealer shows: ");
@@ -312,7 +312,7 @@ public class Blackjack {
 				}
 			}
 			//no splits or done with splits
-			if(hasNotPaid){
+			if(!hasBeenPaid){
 				//payout
 				if(!playerBust){
 					String message = payout(dealerFinalSum, playerFinalSum, bet);
