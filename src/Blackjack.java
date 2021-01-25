@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Blackjack {
 	//creating global variables and objects
 	boolean playerBlackjack, dealerBlackjack, insurance, displayConclusions = true, hasSplit;
-	int money=1000, totalBet, dealerFinalSum;
+	int money=100, totalBet, dealerFinalSum;
 	ArrayList<String> roundDeck, dealerCards, completeDeck = new ArrayList<>(), conclusions = new ArrayList<>();
 	ArrayList<Integer> indexOfTen = new ArrayList<>();
 	Scanner input = new Scanner(System.in);
@@ -287,7 +287,7 @@ public class Blackjack {
 					playerCards2.add(playerCards.get(1));
 					playerCards.remove(1);
 					System.out.println("Hitting both hands.");
-					playerCards.add(roundDeck.get(6));
+					playerCards.add(roundDeck.get(5));
 					roundDeck.remove(playerCards.get(1));
 					playerCards2.add(roundDeck.get(random.nextInt(roundDeck.size())));
 					roundDeck.remove(playerCards2.get(1));
