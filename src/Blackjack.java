@@ -93,7 +93,7 @@ public class Blackjack {
 				                   "\n\nBlackjack pays 3 to 2.\n\nInsurance pays 2 to 1.\nInsurance only offered upon dealer ace."+
 				                   "\nInsurance fixed to half the bet (rounded down).\n\nDealer must hit soft 17.\n\nNo surrender."+
 				                   "\nYou can double down after splitting.\nDouble down allowed on any two cards."+
-				                   "\nNo limits on splitting.\nNo hitting after split.\nNo blackjacks after splitting.\n\nMax bet: $300\nMin bet: $1"+
+				                   "\nNo limits on splitting.\nNo hitting after splitting aces.\nNo blackjacks after splitting.\n\nMax bet: $300\nMin bet: $1"+
 				                   "\n\nStart new round by pressing enter.\nExit game by typing \"exit\" instead.\n-----------------------------");
 		
 		//round start
@@ -130,7 +130,7 @@ public class Blackjack {
 			}
 			input.nextLine();
 			
-			//creating temporary round deck
+			//creating deck for this round
 			roundDeck = new ArrayList<>(completeDeck);
 
 			//first cards
