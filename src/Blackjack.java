@@ -306,7 +306,10 @@ public class Blackjack {
 			if(hasNotPaid){
 				//payout
 				if(!playerBust){
-					conclusions.add(payout(dealerFinalSum, playerFinalSum, bet));
+					String message = payout(dealerFinalSum, playerFinalSum, bet);
+					if(!message.equals("Dealer bust") || !conclusions.contains("Dealer bust")){
+						conclusions.add(message);
+					}
 				}else{
 					money -= bet;
 					conclusions.add("Player bust.");
