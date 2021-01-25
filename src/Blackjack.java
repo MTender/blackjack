@@ -149,10 +149,7 @@ public class Blackjack {
 
 			//display starting cards
 			System.out.println("Your cards: " + playerStartingCards.get(0) + ", " + playerStartingCards.get(1));
-			if(!dealerBlackjack){
-				System.out.println("Dealer shows: " + dealerCards.get(0));
-				dealerFinalSum = dealer(); //playing dealer hand
-			}else System.out.println("Dealer shows: " + dealerCards.get(0) +", "+ dealerCards.get(1));
+			System.out.println("Dealer shows: " + dealerCards.get(0));
 			
 			//insurance
 			insurance = false;
@@ -165,6 +162,13 @@ public class Blackjack {
 				}else if(insuranceChoice.equals("n")){
 					break;
 				}else System.out.println("ERROR: Input not recognised.");
+			}
+
+			//dealer action
+			if(!dealerBlackjack){
+				dealerFinalSum = dealer(); //playing dealer hand
+			}else{
+				System.out.println("Dealer shows: " + dealerCards.get(0) + ", " + dealerCards.get(1));
 			}
 			
 			//round start default global variables
@@ -341,6 +345,7 @@ public class Blackjack {
 				return "Dealer blackjack. Insurance pays";
 			}else{
 				money -= bet;
+				if(dealerBlackjack) return "Dealer blackjack";
 				return "Dealer wins";
 			}
 		}else if(playerBlackjack && !dealerBlackjack){
