@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Blackjack {
 	//creating global variables and objects
 	boolean playerBlackjack, dealerBlackjack, insurance, displayConclusions = true, hasSplit;
-	int money=1000, totalBet, dealerFinalSum;
+	int money=1000, cashAtRoundStart, totalBet, dealerFinalSum;
 	ArrayList<String> roundDeck, dealerCards, completeDeck = new ArrayList<>(), conclusions = new ArrayList<>();
 	ArrayList<Integer> indexOfTen = new ArrayList<>();
 	Scanner input = new Scanner(System.in);
@@ -183,6 +183,7 @@ public class Blackjack {
 			hasSplit = false;
 			conclusions.clear();
 			displayConclusions = true;
+			cashAtRoundStart = money;
 			hand(playerStartingCards, bet);
 		}
 	}
@@ -191,14 +192,14 @@ public class Blackjack {
 	public void hand(ArrayList<String> playerCards, int previousBet){
 		//hand start defaults
 		int playerFinalSum = 0, bet = previousBet;
-		boolean playerBust = false, hasNotPaid = true, calcPlayerScore = false, breakNow = false;
+		boolean playerBust = false, hasBeenPaid = false, calcPlayerScore = false, breakNow = false;
 		boolean splitAllowed = false, doubleAllowed = false, hitAllowed = true;
 		
 		//game
 		if(!(playerBlackjack || dealerBlackjack)){
 			//starting options display
 			if(hasSplit && (completeDeck.indexOf(playerCards.get(0))+1)%13 == 0){
-				if(money >= totalBet + bet && (completeDeck.indexOf(playerCards.get(1))+1)%13 == 0){
+				if(cashAtRoundStart >= totalBet + bet && (completeDeck.indexOf(playerCards.get(1))+1)%13 == 0){
 					hitAllowed = false;
 					splitAllowed = true;
 					System.out.println("Dealer shows: "+dealerCards.get(0));
@@ -207,7 +208,7 @@ public class Blackjack {
 					calcPlayerScore = true;
 					breakNow = true;
 				}
-			}else if(money >= totalBet + bet && playerCards.size() == 2){
+			}else if(cashAtRoundStart >= totalBet + bet && playerCards.size() == 2){
 				int index1 = completeDeck.indexOf(playerCards.get(0)), index2 = completeDeck.indexOf(playerCards.get(1));
 				if((index1 - index2) % 13 == 0 || (indexOfTen.contains(index1) && indexOfTen.contains(index2))){
 					System.out.println("Hit, Stand, Double or Split (h/s/d/sp): ");
@@ -296,7 +297,7 @@ public class Blackjack {
 					hand(playerCards, bet);
 					System.out.println("Playing second hand: " + playerCards2.get(0) +", "+ playerCards2.get(1));
 					hand(playerCards2, bet);
-					hasNotPaid = false;
+					hasBeenPaid = true;
 					//display dealer cards and conclusions
 					if(displayConclusions){
 						System.out.print("Dealer shows: ");
@@ -312,7 +313,7 @@ public class Blackjack {
 				}
 			}
 			//no splits or done with splits
-			if(hasNotPaid){
+			if(!hasBeenPaid){
 				//payout
 				if(!playerBust){
 					String message = payout(dealerFinalSum, playerFinalSum, bet);
