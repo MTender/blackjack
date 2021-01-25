@@ -136,15 +136,13 @@ public class Blackjack {
 			//first cards
 			ArrayList<String> playerStartingCards = new ArrayList<>(); //!!!check whether double ace split works
 			dealerCards = new ArrayList<>();
-			playerStartingCards.add(roundDeck.get(random.nextInt(104)));
-			roundDeck.remove(playerStartingCards.get(0));
-			dealerCards.add(roundDeck.get(random.nextInt(103)));
-			roundDeck.remove(dealerCards.get(0));
-			playerStartingCards.add(roundDeck.get(random.nextInt(102)));
-			roundDeck.remove(playerStartingCards.get(1));
-			dealerCards.add(roundDeck.get(random.nextInt(101)));
-			roundDeck.remove(dealerCards.get(1));
-			
+			for(int i = 0; i<2; i++) {
+				playerStartingCards.add(roundDeck.get(random.nextInt(roundDeck.size())));
+				roundDeck.remove(playerStartingCards.get(i));
+				dealerCards.add(roundDeck.get(random.nextInt(roundDeck.size())));
+				roundDeck.remove(dealerCards.get(i));
+			}
+
 			//blackjack check
 			playerBlackjack = blackjackCheck(playerStartingCards);
 			dealerBlackjack = blackjackCheck(dealerCards);
