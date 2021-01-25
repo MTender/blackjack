@@ -194,7 +194,10 @@ public class Blackjack {
 					splitAllowed = true;
 					System.out.println("Dealer shows: "+dealerCards.get(0));
 					System.out.println("Stand or Split (s/sp): ");
-				}else breakNow = true;
+				}else{
+					calcPlayerScore = true;
+					breakNow = true;
+				}
 			}else if(money >= totalBet + bet && playerCards.size() == 2){
 				int index1 = completeDeck.indexOf(playerCards.get(0)), index2 = completeDeck.indexOf(playerCards.get(1));
 				if((index1 - index2) % 13 == 0 || (indexOfTen.contains(index1) && indexOfTen.contains(index2))){
