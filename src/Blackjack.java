@@ -16,11 +16,9 @@ public class Blackjack {
 	public boolean blackjackCheck(ArrayList<String> startingCards){
 		for(int i = 0; i<4; i++){
 			if(startingCards.contains(completeDeck.get(13 * i + 12))){
-				for(int j = 0; j<4; j++){
-					for(int k = 8; k<=11; k++){
-						if(startingCards.contains(completeDeck.get(13 * j + k))){
-							return true;
-						}
+				for(int j = 0; j<16; j++){
+					if(startingCards.contains(completeDeck.get(indexOfTen.get(j)))){
+						return true;
 					}
 				}
 			}
