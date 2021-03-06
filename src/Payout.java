@@ -26,21 +26,21 @@ public class Payout {
 	}
 
 	public static int bothBlackjack(int bet) {
-		System.out.println("Push");
+		Blackjack.addConclusion("Push");
 		return -insuranceLoss(bet);
 	}
 
 	public static int playerBlackjack(int bet) { // bet is an argument for every method, fix in future
-		System.out.println("Blackjack!");
+		Blackjack.addConclusion("Blackjack!");
 		return (int) Math.floor(bet * 1.5) - insuranceLoss(bet);
 	}
 
 	public static int dealerBlackjack(int bet) {
-		System.out.print("Dealer blackjack!");
 		if (Blackjack.isInsurance()) {
-			System.out.println(" Insurance pays");
+			Blackjack.addConclusion("Dealer blackjack! Insurance pays");
 			return (int) (2 * Math.floor(bet * 0.5)) - bet;
 		}
+		Blackjack.addConclusion("Dealer blackjack!");
 		System.out.println();
 		return -bet;
 	}
