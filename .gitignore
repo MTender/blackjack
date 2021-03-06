@@ -21,6 +21,7 @@
 
 # IntelliJ files
 .idea/
+.gradle/
 *.iml
 *.iws
 
