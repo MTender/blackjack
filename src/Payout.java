@@ -1,13 +1,13 @@
 public class Payout {
 	public static int normal(int playerFinalSum, int bet) {
-		int dealerFinalSum = Blackjack.getDealerFinalSum();
 		if (playerFinalSum > 21) {
 			Blackjack.addConclusion("Player bust");
 			return -bet;
 		} else {
-			if (Blackjack.getConclusions().contains("Dealer bust")) { // checking player bust outside of method, fix in future
+			if (Blackjack.getConclusions().contains("Dealer bust")) {
 				return bet;
 			} else {
+				int dealerFinalSum = Blackjack.getDealerFinalSum();
 				if (dealerFinalSum > 21) {
 					Blackjack.addConclusion("Dealer bust");
 					return bet;
@@ -46,7 +46,7 @@ public class Payout {
 	}
 
 	public static int insuranceLoss(int bet) {
-		if (Blackjack.isInsurance()) { // thought of error in v1.0: insurance loss does not include scenario where player and dealer have blackjacks
+		if (Blackjack.isInsurance()) {
 			return (int) Math.floor(bet * 0.5);
 		}
 		return 0;

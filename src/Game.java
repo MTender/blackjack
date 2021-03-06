@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Game {
-	public static boolean blackjackCheck(ArrayList<String> startingCards) {
+	private static boolean blackjackCheck(ArrayList<String> startingCards) {
 		for (int i = 0; i < 4; i++) {
 			if (startingCards.contains(DeckOfCards.getCompleteDeck()[13 * i + 12])) {
 				for (int j = 0; j < 16; j++) {
@@ -14,7 +14,9 @@ public class Game {
 		return false;
 	}
 
-	public static boolean blackjackResult(boolean player, boolean dealer, PlayerHand hand, int bet) {
+	public static boolean blackjackResult(ArrayList<String> playerCards, ArrayList<String> dealerCards, PlayerHand hand, int bet) {
+		boolean player = blackjackCheck(playerCards);
+		boolean dealer = blackjackCheck(dealerCards);
 		if (player && dealer) {
 			Wallet.addMoney(Payout.bothBlackjack(bet));
 			return false;
@@ -42,7 +44,7 @@ public class Game {
 		return new int[]{sum, aces};
 	}
 
-	public static void printMany(ArrayList<String> allText) {
+	public static void printList(ArrayList<String> allText) {
 		int lastIndex = allText.size() - 1;
 		for (int i = 0; i < lastIndex; i++) System.out.print(allText.get(i) + ", ");
 		System.out.println(allText.get(lastIndex));
