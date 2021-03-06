@@ -31,8 +31,8 @@ public class DeckOfCards {
 	}
 
 	public static void findTen() {
-		indexOfTen = new int[4 * amountOfDecks];
-		for (int i = 0; i < amountOfDecks; i++) {
+		indexOfTen = new int[16];
+		for (int i = 0; i < 4; i++) {
 			for (int j = 8; j <= 11; j++) {
 				indexOfTen[i] = 13 * i + j;
 			}
@@ -59,6 +59,10 @@ public class DeckOfCards {
 
 	public static int[] getIndexOfTen() {
 		return indexOfTen;
+	}
+
+	public static int getAmountOfDecks() {
+		return amountOfDecks;
 	}
 
 	public static ArrayList<String> getCompleteDeckList() {
