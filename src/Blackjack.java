@@ -19,13 +19,15 @@ public class Blackjack {
 		//round start
 		while (true) {
 			//remaining money display
-			System.out.println("\nRemaining cash: $" + money + "\nPress enter.");
+			System.out.println("\nRemaining cash: $" + money);
 
 			//exit conditions
 			if (money == 0) {
 				System.out.println("Out of money. Exiting game...");
 				break;
 			}
+
+			System.out.println("Press enter.");
 			String quit = input.nextLine();
 			if (quit.equals("exit")) {
 				System.out.println("Exiting game...");
