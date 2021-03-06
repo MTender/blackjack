@@ -1,8 +1,12 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class DeckOfCards {
 	private static String[] completeDeck;
 	private static int amountOfDecks;
 	private static String[] oneDeck;
 	private static int[] indexOfTen;
+	private static ArrayList<String> completeDeckList;
 
 	public static void generateDeck() {
 		String[] suites = new String[]{"of Hearts", "of Diamonds", "of Spades", "of Clubs"};
@@ -14,14 +18,14 @@ public class DeckOfCards {
 		}
 	}
 
-	public static int setDeckSize(int amountOfDecks) {
+	public static void setDeckSize(int amountOfDecks) {
 		DeckOfCards.amountOfDecks = amountOfDecks;
 		completeDeck = new String[52 * amountOfDecks];
 		for (int i = 0; i < amountOfDecks; i++) {
 			System.arraycopy(oneDeck, 0, completeDeck, 52 * amountOfDecks, 52);
 		}
+		completeDeckList.addAll(Arrays.asList(completeDeck));
 		findTen();
-		return amountOfDecks;
 	}
 
 	public static void findTen() {
@@ -31,6 +35,20 @@ public class DeckOfCards {
 				indexOfTen[i] = 13 * i + j;
 			}
 		}
+	}
+
+	public static int indexOfCard(String card) {
+		for (int i = 0; i < 52; i++) {
+			if (oneDeck[i].equals(card)) return i;
+		}
+		return -1;
+	}
+
+	public static boolean hasValueOfTen(int index) {
+		for (int j : indexOfTen) {
+			if (index == j) return true;
+		}
+		return false;
 	}
 
 	public static String[] getCompleteDeck() {
@@ -47,5 +65,9 @@ public class DeckOfCards {
 
 	public static int[] getIndexOfTen() {
 		return indexOfTen;
+	}
+
+	public static ArrayList<String> getCompleteDeckList() {
+		return completeDeckList;
 	}
 }

@@ -7,17 +7,16 @@ public class Blackjack {
 	//creating global variables and objects
 	boolean playerBlackjack, dealerBlackjack, insurance, displayConclusions = true, hasSplit;
 	int money = 1000, cashAtRoundStart, totalBet, dealerFinalSum;
-	ArrayList<String> roundDeck, dealerCards, completeDeck = new ArrayList<>(), conclusions = new ArrayList<>();
-	ArrayList<Integer> indexOfTen = new ArrayList<>();
+	ArrayList<String> roundDeck, dealerCards, conclusions = new ArrayList<>();
 	Scanner input = new Scanner(System.in);
 	Random random = new Random();
 
 
 	public boolean blackjackCheck(ArrayList<String> startingCards) {
 		for (int i = 0; i < 4; i++) {
-			if (startingCards.contains(completeDeck.get(13 * i + 12))) {
+			if (startingCards.contains(DeckOfCards.getCompleteDeck()[13 * i + 12])) {
 				for (int j = 0; j < 16; j++) {
-					if (startingCards.contains(completeDeck.get(indexOfTen.get(j)))) {
+					if (startingCards.contains(DeckOfCards.getCompleteDeck()[DeckOfCards.getIndexOfTen()[j]])) {
 						return true;
 					}
 				}
@@ -31,7 +30,7 @@ public class Blackjack {
 		//counting aces and other cards
 		int sum = 0, aces = 0;
 		for (String card : cards) {
-			int index = completeDeck.indexOf(card) % 13;
+			int index = DeckOfCards.indexOfCard(card) % 13;
 			if (index <= 8) {
 				sum += (index + 2);
 			} else if (index <= 11) {
@@ -82,18 +81,7 @@ public class Blackjack {
 
 
 	public void begin() {
-		//deck creation
-		String[] suites = new String[]{"of Hearts", "of Diamonds", "of Spades", "of Clubs"};
-		String[] pictures = new String[]{"Jack", "Queen", "King", "Ace"};
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j <= 8; j++) completeDeck.add((j + 2) + " " + suites[i]);
-			for (int j = 0; j <= 3; j++) completeDeck.add(pictures[j] + " " + suites[i]);
-		}
-		completeDeck.addAll(new ArrayList<>(completeDeck)); //two decks
-
-		//arraylist of indexes of cards with value 10
-		for (int j = 0; j < 4; j++) for (int k = 8; k <= 11; k++) indexOfTen.add(j * 13 + k);
-
+		DeckOfCards.setDeckSize(2);
 		//introduction and rules
 		System.out.println("""
 				-----------------------------
@@ -158,7 +146,7 @@ public class Blackjack {
 			input.nextLine();
 
 			//creating deck for this round
-			roundDeck = new ArrayList<>(completeDeck);
+			roundDeck = new ArrayList<>(DeckOfCards.getCompleteDeckList());
 
 			//first cards
 			ArrayList<String> playerStartingCards = new ArrayList<>(); //!!!check whether double ace split works
@@ -180,7 +168,7 @@ public class Blackjack {
 
 			//insurance
 			insurance = false;
-			while (money >= Math.floor(bet * 1.5) && (completeDeck.indexOf(dealerCards.get(0)) + 1) % 13 == 0) {
+			while (money >= Math.floor(bet * 1.5) && (DeckOfCards.indexOfCard(dealerCards.get(0)) + 1) % 13 == 0) {
 				System.out.println("Would you like insurance? (y/n)");
 				String insuranceChoice = input.nextLine();
 				if (insuranceChoice.equals("y")) {
@@ -218,8 +206,8 @@ public class Blackjack {
 		//game
 		if (!(playerBlackjack || dealerBlackjack)) {
 			//starting options display
-			if (hasSplit && (completeDeck.indexOf(playerCards.get(0)) + 1) % 13 == 0) {
-				if (cashAtRoundStart >= totalBet + bet && (completeDeck.indexOf(playerCards.get(1)) + 1) % 13 == 0) {
+			if (hasSplit && (DeckOfCards.indexOfCard(playerCards.get(0)) + 1) % 13 == 0) {
+				if (cashAtRoundStart >= totalBet + bet && (DeckOfCards.indexOfCard(playerCards.get(1)) + 1) % 13 == 0) {
 					hitAllowed = false;
 					splitAllowed = true;
 					System.out.println("Dealer shows: " + dealerCards.get(0));
@@ -229,8 +217,8 @@ public class Blackjack {
 					breakNow = true;
 				}
 			} else if (cashAtRoundStart >= totalBet + bet && playerCards.size() == 2) {
-				int index1 = completeDeck.indexOf(playerCards.get(0)), index2 = completeDeck.indexOf(playerCards.get(1));
-				if ((index1 - index2) % 13 == 0 || (indexOfTen.contains(index1) && indexOfTen.contains(index2))) {
+				int index1 = DeckOfCards.indexOfCard(playerCards.get(0)), index2 = DeckOfCards.indexOfCard(playerCards.get(1));
+				if ((index1 - index2) % 13 == 0 || (DeckOfCards.hasValueOfTen(index1) && DeckOfCards.hasValueOfTen(index2))) {
 					System.out.println("Hit, Stand, Double or Split (h/s/d/sp): ");
 					splitAllowed = true;
 				} else System.out.println("Hit, Stand or Double (h/s/d): ");
