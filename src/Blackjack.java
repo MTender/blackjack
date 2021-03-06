@@ -6,44 +6,12 @@ import java.util.Scanner;
 public class Blackjack {
 	private static ArrayList<String> dealerCards;
 	private static ArrayList<String> roundDeck;
-	private static boolean insurance;
 	private static ArrayList<String> conclusions;
+	private static boolean insurance;
 	private static int dealerFinalSum;
 	private static int totalBet;
 	private static int moneyAtRoundStart;
-
-	public static int dealer() {
-		Random random = new Random();
-		//dealer actions
-		int dealerSum, dealerAces, dealerFinalSum;
-
-		while (true) {
-			int[] dealerSums = Game.sumOfCards(dealerCards);
-			dealerSum = dealerSums[0];
-			dealerAces = dealerSums[1];
-
-			//choosing calculation method
-			if (dealerAces == 0) {
-				if (dealerSum >= 17) {
-					dealerFinalSum = dealerSum;
-					break;
-				}
-			} else if (dealerSum + 10 + dealerAces >= 18 && dealerSum + 10 + dealerAces <= 21) {
-				dealerFinalSum = dealerSum + 10 + dealerAces;
-				break;
-			} else if (dealerSum + dealerAces >= 17) {
-				dealerFinalSum = dealerSum + dealerAces;
-				break;
-			}
-
-			//dealer next card
-			dealerCards.add(roundDeck.get(random.nextInt(roundDeck.size())));
-			roundDeck.remove(dealerCards.get(dealerCards.size() - 1));
-		}
-
-		return dealerFinalSum;
-	}
-
+	private static int money;
 
 	public static void begin() {
 		Scanner input = new Scanner(System.in);
@@ -51,10 +19,10 @@ public class Blackjack {
 		//round start
 		while (true) {
 			//remaining money display
-			System.out.println("\nRemaining cash: $" + Wallet.getMoney() + "\nPress enter.");
+			System.out.println("\nRemaining cash: $" + money + "\nPress enter.");
 
 			//exit conditions
-			if (Wallet.getMoney() == 0) {
+			if (money == 0) {
 				System.out.println("Out of money. Exiting game...");
 				break;
 			}
@@ -70,10 +38,10 @@ public class Blackjack {
 			while (true) {
 				try {
 					bet = input.nextInt();
-					if (bet >= 5 && bet <= 300 && bet <= Wallet.getMoney()) {
+					if (bet >= 5 && bet <= 300 && bet <= money) {
 						break;
 					} else {
-						System.out.println("ERROR: Enter a whole number from 1 to " + (Wallet.getMoney() > 300 ? "300" : Wallet.getMoney()));
+						System.out.println("ERROR: Enter a whole number from 1 to " + (money > 300 ? "300" : money));
 					}
 				} catch (InputMismatchException ime) {
 					System.out.println("ERROR: Enter a whole number!");
@@ -101,7 +69,7 @@ public class Blackjack {
 
 			//insurance
 			insurance = false;
-			while (Wallet.getMoney() >= Math.floor(bet * 1.5) && (DeckOfCards.indexOfCard(dealerCards.get(0)) + 1) % 13 == 0) {
+			while (money >= Math.floor(bet * 1.5) && (DeckOfCards.indexOfCard(dealerCards.get(0)) + 1) % 13 == 0) {
 				System.out.println("Would you like insurance? (y/n)");
 				String insuranceChoice = input.nextLine();
 				if (insuranceChoice.equals("y")) {
@@ -115,15 +83,17 @@ public class Blackjack {
 			//round start default global variables
 			totalBet = bet;
 			conclusions = new ArrayList<>();
-			// displayConclusions = true;
-			moneyAtRoundStart = Wallet.getMoney();
+			moneyAtRoundStart = money;
 			PlayerHand hand = new PlayerHand(playerStartingCards, bet, false);
 
 			//blackjack check
 			if (Game.blackjackResult(playerStartingCards, dealerCards, bet)) {
-				dealerFinalSum = dealer(); //playing dealer hand
+				dealerFinalSum = Game.dealer(dealerCards); //playing dealer hand
 				hand.gameplay();
 			}
+			System.out.print("Dealer shows: ");
+			Game.printList(dealerCards);
+			Game.printList(conclusions);
 		}
 	}
 
@@ -145,6 +115,14 @@ public class Blackjack {
 
 	public static ArrayList<String> getConclusions() {
 		return conclusions;
+	}
+
+	public static void addMoney(int amount) {
+		money += amount;
+	}
+
+	public static void setMoney(int money) {
+		Blackjack.money = money;
 	}
 
 	public static void increaseTotalBet(int sum) {
