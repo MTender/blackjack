@@ -46,22 +46,8 @@ public class PlayerHand {
 			//player score calculation
 			if (mustCalculateScore) {
 				playerFinalSum = calculatePlayerScore(Game.sumOfCards(playerCards));
-				// 21 or bust
-				if (playerFinalSum >= 21) {
-					breakNow = true;
-				}
-				//end hand
-				if (breakNow) {
-					//display dealer cards
-					/*
-					if (displayConclusions && !hasSplit) {
-						System.out.print("Dealer shows: ");
-						Game.printList(dealerCards);
-						displayConclusions = false;
-					}
-					*/
-					break;
-				}
+				// end hand
+				if (playerFinalSum >= 21 || breakNow) break;
 				//next choice
 				System.out.println("Dealer shows: " + Blackjack.dealerOpenCard());
 				System.out.println("Hit or Stand (h/s): ");
@@ -115,15 +101,6 @@ public class PlayerHand {
 				hand2.gameplay();
 
 				hasBeenPaid = true;
-				//display dealer cards and conclusions
-				/*
-				if (displayConclusions) {
-					System.out.print("Dealer shows: ");
-					Game.printList(dealerCards);
-					Game.printList(conclusions);
-					displayConclusions = false;
-				}
-				*/
 				break;
 			} else {
 				//unrecognised input
@@ -131,13 +108,8 @@ public class PlayerHand {
 				System.out.println("ERROR: Input not recognised.");
 			}
 		}
-		//no splits or done with splits
-		if (!hasBeenPaid) {
-			//payout
-			Wallet.addMoney(Payout.normal(playerFinalSum, bet));
-			//display conclusion
-			// if (!hasSplit) System.out.println(conclusions.get(0));
-		}
+		//no splits or done with splits, payout
+		if (!hasBeenPaid) Blackjack.addMoney(Payout.normal(playerFinalSum, bet));
 	}
 
 	private static int calculatePlayerScore(int[] playerSums) {

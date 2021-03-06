@@ -1,6 +1,39 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Game {
+	public static int dealer(ArrayList<String> dealerCards) {
+		Random random = new Random();
+		//dealer actions
+		int dealerSum, dealerAces, dealerFinalSum;
+
+		while (true) {
+			int[] dealerSums = sumOfCards(dealerCards);
+			dealerSum = dealerSums[0];
+			dealerAces = dealerSums[1];
+
+			//choosing calculation method
+			if (dealerAces == 0) {
+				if (dealerSum >= 17) {
+					dealerFinalSum = dealerSum;
+					break;
+				}
+			} else if (dealerSum + 10 + dealerAces >= 18 && dealerSum + 10 + dealerAces <= 21) {
+				dealerFinalSum = dealerSum + 10 + dealerAces;
+				break;
+			} else if (dealerSum + dealerAces >= 17) {
+				dealerFinalSum = dealerSum + dealerAces;
+				break;
+			}
+
+			//dealer next card
+			dealerCards.add(Blackjack.randomCard(random));
+			Blackjack.roundDeckRemove(dealerCards.get(dealerCards.size() - 1));
+		}
+
+		return dealerFinalSum;
+	}
+
 	private static boolean blackjackCheck(ArrayList<String> startingCards) {
 		for (int i = 0; i < 4; i++) {
 			if (startingCards.contains(DeckOfCards.getCompleteDeck()[13 * i + 12])) {
@@ -18,13 +51,13 @@ public class Game {
 		boolean player = blackjackCheck(playerCards);
 		boolean dealer = blackjackCheck(dealerCards);
 		if (player && dealer) {
-			Wallet.addMoney(Payout.bothBlackjack(bet));
+			Blackjack.addMoney(Payout.bothBlackjack(bet));
 			return false;
 		} else if (player) {
-			Wallet.addMoney(Payout.playerBlackjack(bet));
+			Blackjack.addMoney(Payout.playerBlackjack(bet));
 			return false;
 		} else if (dealer) {
-			Wallet.addMoney(Payout.dealerBlackjack(bet));
+			Blackjack.addMoney(Payout.dealerBlackjack(bet));
 			return false;
 		}
 		return true;

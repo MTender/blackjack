@@ -2,7 +2,7 @@ public class Main {
 	public static void main(String[] args) {
 		DeckOfCards.generateDeck();
 		DeckOfCards.setDeckSize(2);
-		Wallet.setMoney(0);
+		Blackjack.setMoney(100);
 		//introduction and rules
 		System.out.println("""
 				-----------------------------
@@ -31,7 +31,6 @@ public class Main {
 				Start new round by pressing enter.
 				Exit game by typing "exit" instead.
 				-----------------------------""");
-		Blackjack game = new Blackjack();
-		game.begin();
+		Blackjack.begin();
 	}
 }

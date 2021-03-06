@@ -3,10 +3,11 @@ import java.util.Arrays;
 
 public class DeckOfCards {
 	private static String[] completeDeck;
-	private static int amountOfDecks;
 	private static String[] oneDeck;
-	private static int[] indexOfTen;
 	private static ArrayList<String> completeDeckList;
+	private static int amountOfDecks;
+	private static int[] indexOfTen;
+
 
 	public static void generateDeck() {
 		String[] suites = new String[]{"of Hearts", "of Diamonds", "of Spades", "of Clubs"};
@@ -22,8 +23,9 @@ public class DeckOfCards {
 		DeckOfCards.amountOfDecks = amountOfDecks;
 		completeDeck = new String[52 * amountOfDecks];
 		for (int i = 0; i < amountOfDecks; i++) {
-			System.arraycopy(oneDeck, 0, completeDeck, 52 * amountOfDecks, 52);
+			System.arraycopy(oneDeck, 0, completeDeck, 52 * i, 52);
 		}
+		completeDeckList = new ArrayList<>();
 		completeDeckList.addAll(Arrays.asList(completeDeck));
 		findTen();
 	}
@@ -53,14 +55,6 @@ public class DeckOfCards {
 
 	public static String[] getCompleteDeck() {
 		return completeDeck;
-	}
-
-	public static int getAmountOfDecks() {
-		return amountOfDecks;
-	}
-
-	public static String[] getOneDeck() {
-		return oneDeck;
 	}
 
 	public static int[] getIndexOfTen() {
