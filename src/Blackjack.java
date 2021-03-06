@@ -9,27 +9,8 @@ public class Blackjack {
 	private static boolean insurance;
 	private static ArrayList<String> conclusions;
 	private static int dealerFinalSum;
-	//creating global variables and objects
-	boolean dealerBlackjack, displayConclusions = true, hasSplit;
-	int cashAtRoundStart, totalBet, dealerFinalSum;
-	Scanner input = new Scanner(System.in);
-	Random random = new Random();
-
-	public static boolean isInsurance() {
-		return insurance;
-	}
-
-	public static int getDealerFinalSum() {
-		return dealerFinalSum;
-	}
-
-	public static ArrayList<String> getConclusions() {
-		return conclusions;
-	}
-
-	public static void addConclusion(String conclusion) {
-		conclusions.add(conclusion);
-	}
+	private static int totalBet;
+	private static int moneyAtRoundStart;
 
 	public static int dealer() {
 		Random random = new Random();
@@ -64,7 +45,9 @@ public class Blackjack {
 	}
 
 
-	public void begin() {
+	public static void begin() {
+		Scanner input = new Scanner(System.in);
+		Random random = new Random();
 		//round start
 		while (true) {
 			//remaining money display
@@ -129,25 +112,58 @@ public class Blackjack {
 				} else System.out.println("ERROR: Input not recognised.");
 			}
 
-			//dealer action
-			if (!dealerBlackjack) {
-				dealerFinalSum = dealer(); //playing dealer hand
-			} else {
-				System.out.println("Dealer shows: " + dealerCards.get(0) + ", " + dealerCards.get(1));
-			}
-
 			//round start default global variables
 			totalBet = bet;
-			hasSplit = false;
-			conclusions.clear();
-			displayConclusions = true;
-			cashAtRoundStart = Wallet.getMoney();
-			PlayerHand hand = new PlayerHand(playerStartingCards, bet);
+			conclusions = new ArrayList<>();
+			// displayConclusions = true;
+			moneyAtRoundStart = Wallet.getMoney();
+			PlayerHand hand = new PlayerHand(playerStartingCards, bet, false);
 
 			//blackjack check
-			if (Game.blackjackResult(Game.blackjackCheck(playerStartingCards), Game.blackjackCheck(dealerCards), hand, bet)) { // should be changed later
-				hand.gameplay(playerStartingCards, bet);
+			if (Game.blackjackResult(playerStartingCards, dealerCards, bet)) {
+				dealerFinalSum = dealer(); //playing dealer hand
+				hand.gameplay();
 			}
 		}
+	}
+
+	public static boolean isInsurance() {
+		return insurance;
+	}
+
+	public static int getTotalBet() {
+		return totalBet;
+	}
+
+	public static int getMoneyAtRoundStart() {
+		return moneyAtRoundStart;
+	}
+
+	public static int getDealerFinalSum() {
+		return dealerFinalSum;
+	}
+
+	public static ArrayList<String> getConclusions() {
+		return conclusions;
+	}
+
+	public static void increaseTotalBet(int sum) {
+		totalBet += sum;
+	}
+
+	public static void addConclusion(String conclusion) {
+		conclusions.add(conclusion);
+	}
+
+	public static String dealerOpenCard() {
+		return dealerCards.get(0);
+	}
+
+	public static void roundDeckRemove(String card) {
+		roundDeck.remove(card);
+	}
+
+	public static String randomCard(Random random) {
+		return roundDeck.get(random.nextInt(roundDeck.size()));
 	}
 }
