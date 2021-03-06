@@ -333,7 +333,7 @@ public class Blackjack {
 
 	public String payout(int dealerFinalSum, int playerFinalSum, int bet) {
 		//insurance loss check
-		if (insurance && !dealerBlackjack) {
+		if (insurance && (!dealerBlackjack || playerBlackjack)) {
 			money -= Math.floor(bet * 0.5);
 		}
 		//finding winner and paying
