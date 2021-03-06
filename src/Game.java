@@ -14,7 +14,7 @@ public class Game {
 		return false;
 	}
 
-	public static boolean blackjackResult(ArrayList<String> playerCards, ArrayList<String> dealerCards, PlayerHand hand, int bet) {
+	public static boolean blackjackResult(ArrayList<String> playerCards, ArrayList<String> dealerCards, int bet) {
 		boolean player = blackjackCheck(playerCards);
 		boolean dealer = blackjackCheck(dealerCards);
 		if (player && dealer) {
