@@ -96,12 +96,33 @@ public class Blackjack {
 		for (int j = 0; j < 4; j++) for (int k = 8; k <= 11; k++) indexOfTen.add(j * 13 + k);
 
 		//introduction and rules
-		System.out.println("-----------------------------\nThis is double deck blackjack. \nContinuous shuffler.\nHole card." +
-				"\n\nBlackjack pays 3 to 2.\n\nInsurance pays 2 to 1.\nInsurance only offered upon dealer ace." +
-				"\nInsurance fixed to half the bet (rounded down).\n\nDealer must hit soft 17.\n\nNo surrender." +
-				"\nYou can double down after splitting.\nDouble down allowed on any two cards." +
-				"\nNo limits on splitting.\nNo hitting after splitting aces.\nNo blackjacks after splitting.\n\nMax bet: $300\nMin bet: $1" +
-				"\n\nStart new round by pressing enter.\nExit game by typing \"exit\" instead.\n-----------------------------");
+		System.out.println("""
+				-----------------------------
+				This is double deck blackjack.\s
+				Continuous shuffler.
+				Hole card.
+
+				Blackjack pays 3 to 2.
+
+				Insurance pays 2 to 1.
+				Insurance only offered upon dealer ace.
+				Insurance fixed to half the bet (rounded down).
+
+				Dealer must hit soft 17.
+
+				No surrender.
+				You can double down after splitting.
+				Double down allowed on any two cards.
+				No limits on splitting.
+				No hitting after splitting aces.
+				No blackjacks after splitting.
+
+				Max bet: $300
+				Min bet: $1
+
+				Start new round by pressing enter.
+				Exit game by typing "exit" instead.
+				-----------------------------""");
 
 		//round start
 		while (true) {
@@ -338,7 +359,7 @@ public class Blackjack {
 
 	public String payout(int dealerFinalSum, int playerFinalSum, int bet) {
 		//insurance loss check
-		if (insurance && !dealerBlackjack) {
+		if (insurance && (!dealerBlackjack || playerBlackjack)) {
 			money -= Math.floor(bet * 0.5);
 		}
 		//finding winner and paying
