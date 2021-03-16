@@ -88,9 +88,9 @@ public class PlayerHand {
 				playerCards.clear();
 
 				System.out.println("Hitting both hands.");
-				playerCards1.add(Blackjack.randomCard(random));
+				playerCards1.add(DeckOfCards.getCompleteDeckList().get(25));
 				Blackjack.roundDeckRemove(playerCards1.get(1));
-				playerCards2.add(Blackjack.randomCard(random));
+				playerCards2.add(DeckOfCards.getCompleteDeckList().get(25));
 				Blackjack.roundDeckRemove(playerCards2.get(1));
 
 				System.out.println("Playing first hand: " + playerCards1.get(0) + ", " + playerCards1.get(1));

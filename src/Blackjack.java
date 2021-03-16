@@ -59,11 +59,16 @@ public class Blackjack {
 			ArrayList<String> playerStartingCards = new ArrayList<>(); //!!!check whether double ace split works
 			dealerCards = new ArrayList<>();
 			for (int i = 0; i < 2; i++) {
-				playerStartingCards.add(roundDeck.get(random.nextInt(roundDeck.size())));
-				roundDeck.remove(playerStartingCards.get(i));
+				//playerStartingCards.add(roundDeck.get(random.nextInt(roundDeck.size())));
+				//roundDeck.remove(playerStartingCards.get(i));
 				dealerCards.add(roundDeck.get(random.nextInt(roundDeck.size())));
 				roundDeck.remove(dealerCards.get(i));
 			}
+
+			playerStartingCards.add(DeckOfCards.getCompleteDeckList().get(25));
+			roundDeck.remove(playerStartingCards.get(0));
+			playerStartingCards.add(DeckOfCards.getCompleteDeckList().get(25));
+			roundDeck.remove(playerStartingCards.get(1));
 
 			//display starting cards
 			System.out.println("Your cards: " + playerStartingCards.get(0) + ", " + playerStartingCards.get(1));
