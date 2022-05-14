@@ -1,9 +1,8 @@
+package game;
+
 public class Main {
+
 	public static void main(String[] args) {
-		DeckOfCards.generateDeck();
-		DeckOfCards.setDeckSize(2);
-		Blackjack.setMoney(100);
-		//introduction and rules
 		System.out.println("""
 				-----------------------------
 				This is double deck blackjack.
@@ -16,21 +15,28 @@ public class Main {
 				Insurance only offered upon dealer ace.
 				Insurance fixed to half the bet (rounded down).
 
-				Dealer must hit soft 17.
+				Dealer stands on soft 17.
 
 				No surrender.
 				You can double down after splitting.
 				Double down allowed on any two cards.
 				No limits on splitting.
 				No hitting after splitting aces.
-				No blackjacks after splitting.
+				Blackjack possible after splitting.
 
-				Max bet: $300
-				Min bet: $1
-
-				Start new round by pressing enter.
-				Exit game by typing "exit" instead.
+				Min bet: $5
+				No max bet.
 				-----------------------------""");
-		Blackjack.begin();
+
+		// TODO insurance
+
+		Settings settings = new Settings();
+		settings.setAmountOfDecks(2);
+
+		Wallet wallet = new Wallet();
+		wallet.deposit(100);
+
+		Game game = new Game(settings, wallet);
+		game.start();
 	}
 }
