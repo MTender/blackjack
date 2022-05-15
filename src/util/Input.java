@@ -40,6 +40,21 @@ public class Input {
 		return bet;
 	}
 
+	public static boolean insurance() {
+		while (true) {
+			System.out.println("Would you like insurance? (y/n)");
+			String input = scanner.nextLine().toUpperCase(Locale.ROOT);
+			switch (input) {
+				case "Y":
+					return true;
+				case "N":
+					return false;
+				default:
+					System.out.println(UNRECOGNISED_ERROR);
+			}
+		}
+	}
+
 	public static Move hitStand() {
 		System.out.println("\nHit or Stand (h/s): ");
 		while (true) {

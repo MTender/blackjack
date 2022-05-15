@@ -4,6 +4,7 @@ import deck.Card;
 import deck.GameDeck;
 import hand.DealerHand;
 import hand.PlayerHand;
+import util.Input;
 import util.Outcome;
 import util.Result;
 
@@ -36,6 +37,17 @@ public class Round {
 
 		boolean playerBlackjack = playerHand.isBlackjack();
 		boolean dealerBlackjack = dealerHand.isBlackjack();
+
+		if (!playerBlackjack && dealerHand.getCards().get(0).getValue() == 1 && wallet.getAvailable() >= startingBet / 2) {
+			boolean insurance = Input.insurance();
+			if (insurance) {
+				if (dealerBlackjack) {
+					wallet.deposit(startingBet);
+				} else {
+					wallet.withdraw(startingBet / 2);
+				}
+			}
+		}
 
 		if (playerBlackjack || dealerBlackjack) {
 			wallet.withdraw(startingBet);

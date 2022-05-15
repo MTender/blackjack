@@ -28,8 +28,6 @@ public class Main {
 				No max bet.
 				-----------------------------""");
 
-		// TODO insurance
-
 		Settings settings = new Settings();
 		settings.setAmountOfDecks(2);
 
