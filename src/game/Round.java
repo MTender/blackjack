@@ -35,36 +35,8 @@ public class Round {
 		playerHand.addRandom();
 		dealerHand.addRandom();
 
-		boolean playerBlackjack = playerHand.isBlackjack();
-		boolean dealerBlackjack = dealerHand.isBlackjack();
-
-		if (!playerBlackjack && dealerHand.getCards().get(0).getValue() == 1 && wallet.getAvailable() >= startingBet / 2) {
-			boolean insurance = Input.insurance();
-			if (insurance) {
-				if (dealerBlackjack) {
-					wallet.deposit(startingBet);
-				} else {
-					wallet.withdraw(startingBet / 2);
-				}
-			}
-		}
-
-		if (playerBlackjack || dealerBlackjack) {
-			wallet.withdraw(startingBet);
-
-			playerHand.display();
-			dealerHand.display();
-
-			Outcome outcome;
-			if (playerBlackjack && dealerBlackjack)
-				outcome = Outcome.TIE;
-			else if (playerBlackjack)
-				outcome = Outcome.BLACKJACK;
-			else
-				outcome = Outcome.DEALER_BLACKJACK;
-
-			return List.of(new Result(outcome, playerHand));
-		}
+		Result result = handleInitialBlackjacks(playerHand, dealerHand);
+		if (result != null) return List.of(result);
 
 		wallet.increaseReserve(startingBet);
 
@@ -111,6 +83,40 @@ public class Round {
 		}
 
 		return getResults(playedHands, dealerHand);
+	}
+
+	private Result handleInitialBlackjacks(PlayerHand playerHand, DealerHand dealerHand) {
+		boolean playerBlackjack = playerHand.isBlackjack();
+		boolean dealerBlackjack = dealerHand.isBlackjack();
+
+		if (!playerBlackjack && dealerHand.getCards().get(0).getValue() == 1 && wallet.getAvailable() >= startingBet / 2) {
+			boolean insurance = Input.insurance();
+			if (insurance) {
+				if (dealerBlackjack) {
+					wallet.deposit(startingBet);
+				} else {
+					wallet.withdraw(startingBet / 2);
+				}
+			}
+		}
+
+		if (playerBlackjack || dealerBlackjack) {
+			wallet.withdraw(startingBet);
+
+			playerHand.display();
+			dealerHand.display();
+
+			Outcome outcome;
+			if (playerBlackjack && dealerBlackjack)
+				outcome = Outcome.TIE;
+			else if (playerBlackjack)
+				outcome = Outcome.BLACKJACK;
+			else
+				outcome = Outcome.DEALER_BLACKJACK;
+
+			return new Result(outcome, playerHand);
+		}
+		return null;
 	}
 
 	private List<Result> getResults(List<PlayerHand> playerHands, DealerHand dealerHand) {
