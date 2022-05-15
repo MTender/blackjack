@@ -18,9 +18,7 @@ public class Game {
 
 	public void start() {
 		while (true) {
-			int money = wallet.getMoney();
-
-			System.out.printf("%nRemaining cash: $%s%n", money);
+			System.out.printf("%nRemaining cash: $%s%n", wallet.getMoney());
 
 			boolean exit = Input.exit();
 			if (exit) {
