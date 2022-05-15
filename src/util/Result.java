@@ -21,7 +21,7 @@ public class Result {
 			case BLACKJACK -> (int) (hand.getBet() * 2.5);
 			case VICTORY, DEALER_BUST -> hand.getBet() * 2;
 			case LOSS, BUST, DEALER_BLACKJACK -> 0;
-			case TIE -> hand.getBet();
+			case TIE, INSURANCE_PAYS -> hand.getBet();
 		};
 	}
 }

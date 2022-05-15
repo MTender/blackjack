@@ -90,12 +90,25 @@ public class Round {
 		boolean dealerBlackjack = dealerHand.isBlackjack();
 
 		if (!playerBlackjack && dealerHand.getCards().get(0).getValue() == 1 && wallet.getAvailable() >= startingBet / 2) {
+			playerHand.display();
+			dealerHand.displayFirst();
+
 			boolean insurance = Input.insurance();
 			if (insurance) {
+				wallet.increaseReserve(startingBet / 2);
+
 				if (dealerBlackjack) {
-					wallet.deposit(startingBet);
+					wallet.withdraw(startingBet);
+					wallet.clearReserve();
+
+					playerHand.display();
+					dealerHand.display();
+
+					return new Result(Outcome.INSURANCE_PAYS, playerHand);
 				} else {
-					wallet.withdraw(startingBet / 2);
+					System.out.println("\nDealer does not have blackjack");
+
+					wallet.deductAndClearReserve();
 				}
 			}
 		}

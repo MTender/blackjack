@@ -26,6 +26,10 @@ public class Wallet {
 		reserved = 0;
 	}
 
+	public void clearReserve() {
+		reserved = 0;
+	}
+
 	public int getAvailable() {
 		return money - reserved;
 	}
