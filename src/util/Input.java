@@ -41,8 +41,8 @@ public class Input {
 	}
 
 	public static boolean insurance() {
+		System.out.println("Would you like insurance? (y/n)");
 		while (true) {
-			System.out.println("Would you like insurance? (y/n)");
 			String input = scanner.nextLine().toUpperCase(Locale.ROOT);
 			switch (input) {
 				case "Y":
